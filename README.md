@@ -6,24 +6,43 @@ sudo yum update -y
 sudo yum install python3-pip -y
 sudo yum install ansible -y
 ```
-managed node
+## managed node
+```
 #!/bin/bash
 sudo yum update -y
 sudo yum install python3-pip -y
-install the pageant - upload the key
-putty - allow agent port forwarding
-[web]
-172.31.89.251
-172.31.90.183
+```
+## install the pageant - upload the key
+## putty - allow agent port forwarding
+## [web]
+## 172.31.89.251
+## 172.31.90.183
+```
 vi inventory.txt
+```
+
+```
 ansible web -i inventory.txt -m ping
+```
+
+```
 cat inventory.txt
+```
+```
 ansible web -i inventory.txt -m yum -a "name=httpd state=present" -b
+```
+```
 ansible web -i inventory.txt -m service -a "name=httpd state=started" -b
+```
+```
 cat inventory.txt
-create the playbook newplay.yaml
-execute command -
+```
+## create the playbook newplay.yaml
+## execute command -
+```
 ansible-playbook -i inventory.txt newplay.yaml
+```
+```
 - name: install the httpd and then start
   hosts: all
   become: yes
@@ -36,6 +55,8 @@ ansible-playbook -i inventory.txt newplay.yaml
       service:
         name: httpd
         state: started
+```
+```
 
 - name: uninstall the httpd
   hosts: all
@@ -45,6 +66,8 @@ ansible-playbook -i inventory.txt newplay.yaml
       yum:
         name: httpd
         state: absent
+```
+```
 
 - name: install the httpd and then start
   hosts: all
@@ -62,6 +85,8 @@ ansible-playbook -i inventory.txt newplay.yaml
       copy:
          src: index.html
          dest: /var/www/html/
+```
+```
 - name: Install Java on all servers
   hosts: all
   become: yes
@@ -79,6 +104,8 @@ ansible-playbook -i inventory.txt newplay.yaml
     - name: Display Java Version
       debug:
         var: java_output.stderr
+```
+```
 - name: Install Python on all servers
   hosts: all
   become: yes
@@ -96,6 +123,8 @@ ansible-playbook -i inventory.txt newplay.yaml
     - name: Display Python Version
       debug:
         var: python_output.stdout
+```
+```
 
 - name: Install MySQL on all servers
   hosts: all
@@ -120,20 +149,29 @@ ansible-playbook -i inventory.txt newplay.yaml
     - name: Display MySQL Version
       debug:
         var: mysql_output.stdout
+```
 
-Ansible roles
-create the Ansible role
-command ->
+## Ansible roles
+## create the Ansible role
+## command ->
+```
 ansible-galaxy init myrole
-create the yaml file for the role - newfile.yaml
+```
+## create the yaml file for the role - newfile.yaml
+```
 - name: Install Java on all servers
   hosts: all
   become: yes
   roles:
     - myrole
-role --> tasks --> main.yml
+```
+## role --> tasks --> main.yml
+```
 - name: install the httpd
   yum:
     name: httpd
     state: present
+```
+```
 ansiblle-playbook -i inventory.txt newfile.yaml
+```
